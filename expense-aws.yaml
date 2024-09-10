@@ -1,0 +1,34 @@
+- name: create ec2 and route53 records
+  hosts: localhost
+  vars: 
+    zone: guru97s.cloud
+    instances: 
+      - db
+      - backend
+      - frontend
+  tasks: 
+    - name: creating ec2 instance
+      amazon.aws.ec2_instance:
+        instance_type: t2.micro
+        name: "{{ item }}" # 3 instances names
+        security_group: allow-everything # replace with your AWS values
+        image_id: ami-041e2ea9402c46c32 # AMI id(RHEL-9) for the 3 ec2 servers
+        tags: 
+          Name: "{{ item }}"
+      loop: "{{ instances }}"
+      register: ec2_instances_info
+  
+    - name: printing output
+      ansible.builtin.debug:
+        msg: "Output: {{ec2_instance_info}}"
+
+    - name: creating Route53 records
+      amazon.aws.route53:
+        state: present
+        zone: "{{ zone }}"
+        record: "{{item}}.{{zone}}"
+        type: A
+        value: "{{ item.instances.private_id_address }}"
+        overwrite: true
+        ttl: 1
+      loop: "{{ ec2_instacnes_info.results.instances }}"

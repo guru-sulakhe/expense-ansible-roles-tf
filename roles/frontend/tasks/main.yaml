@@ -1,0 +1,29 @@
+- name: install nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: latest
+
+- name: start and enable nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+  
+- name: run app pre-requeisites 
+  ansible.builtin.import_role:
+    role: common
+    tasks_from: app-pre-req
+
+# if there is a change in configuration , then you need to restart the nginx server
+
+- name: copy backend conf
+  ansible.builtin.template:
+    src: expense.conf.j2
+    dest: /etc/nginx/default.d/expense.conf
+  notify: # instaed of ansible.builtin.service we are using handlers, at which you can restart the nginx server,after using handlers , we need to mention  them in this format
+  - restart nginx
+
+#/- name: restart nginx service
+  #ansible.builtin.service:
+    #name: nginx
+    #state: restarted 

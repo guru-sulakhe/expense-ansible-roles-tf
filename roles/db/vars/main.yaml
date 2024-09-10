@@ -1,0 +1,3 @@
+# mysql_root_password: ExpenseApp@1
+component: db
+login_host: db.guru97s.cloud

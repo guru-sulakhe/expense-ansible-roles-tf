@@ -1,0 +1,9 @@
+- name: configuring DB server
+  hosts: db
+  vars_files:
+  - credential.yaml
+  become: yes
+  roles: # this will search for roles folder is present or not,if present then it will read folders,files sequentially and execute the module
+  - db
+
+  # execute as ansible-playbook db-server.yaml --ask-vault-pass

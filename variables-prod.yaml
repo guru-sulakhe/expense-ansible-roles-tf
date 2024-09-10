@@ -1,0 +1,5 @@
+login_user: root
+login_password: ExpenseApp@1
+login_host: db-prod.guru97s.cloud
+DB_HOST: db-prod.guru97s.cloud
+mysql_root_password: ExpenseApp@1

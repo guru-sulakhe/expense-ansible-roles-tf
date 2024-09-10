@@ -1,11 +1,11 @@
-- name: "configuring {{ component }} server"
+- name: "configure {{ component }} server"
   hosts: all
   connection: local
   vars_files:
   - "variables-{{ env }}.yaml"
   become: yes
-  roles: 
+  roles:
   - "{{ component }}"
-
+  
   # execute as
   # anisble-playbook main.yaml -e component=db
